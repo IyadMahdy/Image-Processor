@@ -1,0 +1,26 @@
+name: Add repository to contributors' profiles
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  add-repository-to-profiles:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get contributors
+        run: |
+          git fetch --all
+          git ls-remote --heads origin
+
+      - name: Add repository to contributors' profiles
+        run: |
+          for remote in $(git remote -v | awk '{print $2}'); do
+            git remote set-url --add $remote https://github.com/$remote.git
+          done
+          git remote rename origin contributors-profiles
+          git push contributors-profiles main
