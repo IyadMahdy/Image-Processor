@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Add contributors-profiles remote
+        run: git remote add contributors-profiles https://github.com/kirolosadel02/Image_processor.git
+
       - name: Get contributors
         run: |
           git fetch --all
