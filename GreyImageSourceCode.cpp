@@ -209,7 +209,22 @@ void invert() {
     }
 }
 
-void merge() {}
+void merge() {
+    unsigned char image2[SIZE][SIZE];
+    char imageFileName[100];
+    cout << "Enter another source image file name: ";
+    cin >> imageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(imageFileName, ".bmp");
+    readGSBMP(imageFileName, image2);
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j] = (image[i][j] + image2[i][j]) / 2;
+        }
+    }
+}
 
 void flip() {}
 
@@ -266,7 +281,35 @@ void rotate() {
     }
 }
 
-void darken_and_lighten() {}
+void darken_and_lighten() {
+    cout << "1- Darken Image" << endl;
+    cout << "2- Lighten Image" << endl;
+    char d_l;
+    cout << "Your Choice : ";
+    cin >> d_l;
+
+    switch (d_l) {
+        case '1':
+            for (auto &row: image) {
+                for (unsigned char &pixel: row) {
+                    if (pixel > 2)
+                        pixel = pixel - (pixel / 2);
+
+                }
+            }
+            break;
+
+        case '2':
+            for (auto &row: image) {
+                for (unsigned char &pixel: row) {
+                    if (pixel < 196) pixel += 60;
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 void detect_edges() {}
 
