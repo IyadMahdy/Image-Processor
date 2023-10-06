@@ -9,10 +9,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="9ea203e2-34c9-4eaf-95aa-ccbe16d8d1a2" name="Changes" comment="" />
+=======
     <list default="true" id="9ea203e2-34c9-4eaf-95aa-ccbe16d8d1a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GreyImageSourceCode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GreyImageSourceCode.cpp" afterDir="false" />
     </list>
+>>>>>>> ac4d40c7dd548b48d6e728155e11f3cc40ab7262
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
