@@ -226,7 +226,28 @@ void merge() {
     }
 }
 
-void flip() {}
+void flip() {
+    char choice;
+
+    cout << "1- Flip Horizontally\n" << "2- Flip vertically\n" << "Choice: ";
+    cin >> choice;
+
+    if (choice == '2')
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                swap(image[i][j], image[i][SIZE-j-1]);
+            }
+        }
+    else if (choice == '1') {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                swap(image[i][j], image[SIZE-i-1][j]);
+            }
+        }
+    }
+    else
+    cout << "Invalid choice";
+}
 
 void rotate_90() {
     for (int i = 0; i < 256; ++i) {
