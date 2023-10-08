@@ -226,7 +226,10 @@ void merge() {
     }
 }
 
-void flip() {}
+void flip() {
+
+    cout << "change";
+}
 
 void rotate_90() {
     for (int i = 0; i < 256; ++i) {
