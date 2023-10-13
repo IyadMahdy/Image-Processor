@@ -40,6 +40,14 @@ void darken_and_lighten();
 
 void detect_edges();
 
+void enlarge_upper_left();
+
+void enlarge_upper_right();
+
+void enlarge_lower_left();
+
+void enlarge_lower_right();
+
 void enlarge();
 
 void shrink();
@@ -233,20 +241,19 @@ void flip() {
     cin >> choice;
 
     if (choice == '2')
-        for (int i = 0; i < SIZE; ++i) {
+        for (auto & i : image) {
             for (int j = 0; j < SIZE / 2; ++j) {
-                swap(image[i][j], image[i][SIZE-j-1]);
+                swap(i[j], i[SIZE - j - 1]);
             }
         }
     else if (choice == '1') {
         for (int i = 0; i < SIZE / 2; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                swap(image[i][j], image[SIZE-i-1][j]);
+                swap(image[i][j], image[SIZE - i - 1][j]);
             }
         }
-    }
-    else
-    cout << "Invalid choice";
+    } else
+        cout << "Invalid choice";
 }
 
 void rotate_90() {
@@ -334,7 +341,76 @@ void darken_and_lighten() {
 
 void detect_edges() {}
 
-void enlarge() {}
+void enlarge_upper_left() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            imageCopy[i][j] = image[i/2][j/2];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j]= imageCopy[i][j];
+        }
+    }
+}
+
+void enlarge_upper_right() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            imageCopy[i][j] = image[i/2][j/2 + 127];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j]= imageCopy[i][j];
+        }
+    }
+}
+
+void enlarge_lower_left() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            imageCopy[i][j] = image[i/2 + 127][j/2];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j]= imageCopy[i][j];
+        }
+    }
+}
+
+void enlarge_lower_right() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            imageCopy[i][j] = image[i/2 + 127][j/2 + 127];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j]= imageCopy[i][j];
+        }
+    }
+}
+
+void enlarge() {
+    cout << "Options: " << '\n';
+    cout << "1- Upper left" << '\n';
+    cout << "2- Upper right" << '\n';
+    cout << "3- Lower left" << '\n';
+    cout << "4- Lower Right" << '\n';
+    char choice{};
+    cout<<"Enter the quarter you want to change: "<<'\n';
+    cin>>choice;
+    if (choice == '1')
+        enlarge_upper_left();
+    else if (choice == '2')
+        enlarge_upper_right();
+    else if (choice == '3')
+        enlarge_lower_left();
+    else if (choice == '4')
+        enlarge_lower_right();
+}
 
 void shrink() {}
 
