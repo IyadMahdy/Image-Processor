@@ -231,15 +231,68 @@ void merge() {
 
 void flip() {}
 
-void rotate() {}
+void rotate_90() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[255 - j][i][k];
+            }
+        }
+    }
+}
 
-void rotate_90() {}
+void rotate_180() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[255 - i][255 - j][k];
+            }
+        }
+    }
+}
 
-void rotate_180() {}
+void rotate_270() {
+    for (int i = 255; i >= 0; --i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[j][i][k];
+            }
+        }
+    }
+}
 
-void rotate_270() {}
+void rotate_360() {
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
-void rotate_360() {}
+void rotate() {
+    cout << "Rotate (90), (180), (270) or (360) degrees?" << '\n';
+    int degree;
+    cout << "Choice: ";
+    cin >> degree;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageCopy[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    if (degree == 90) {
+        rotate_90();
+    } else if (degree == 180) {
+        rotate_180();
+    } else if (degree == 270) {
+        rotate_270();
+    } else {
+        rotate_360();
+    }
+}
 
 void darken_and_lighten() {}
 
