@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 #include <fstream>
 #include <cstring>
 #include <cmath>
@@ -241,7 +241,7 @@ void flip() {
     cin >> choice;
 
     if (choice == '2')
-        for (auto & i : image) {
+        for (auto &i: image) {
             for (int j = 0; j < SIZE / 2; ++j) {
                 swap(i[j], i[SIZE - j - 1]);
             }
@@ -344,12 +344,12 @@ void detect_edges() {}
 void enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
-            imageCopy[i][j] = image[i/2][j/2];
+            imageCopy[i][j] = image[i / 2][j / 2];
         }
     }
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            image[i][j]= imageCopy[i][j];
+            image[i][j] = imageCopy[i][j];
         }
     }
 }
@@ -357,12 +357,12 @@ void enlarge_upper_left() {
 void enlarge_upper_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
-            imageCopy[i][j] = image[i/2][j/2 + 127];
+            imageCopy[i][j] = image[i / 2][j / 2 + 127];
         }
     }
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            image[i][j]= imageCopy[i][j];
+            image[i][j] = imageCopy[i][j];
         }
     }
 }
@@ -370,12 +370,12 @@ void enlarge_upper_right() {
 void enlarge_lower_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
-            imageCopy[i][j] = image[i/2 + 127][j/2];
+            imageCopy[i][j] = image[i / 2 + 127][j / 2];
         }
     }
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            image[i][j]= imageCopy[i][j];
+            image[i][j] = imageCopy[i][j];
         }
     }
 }
@@ -383,12 +383,12 @@ void enlarge_lower_left() {
 void enlarge_lower_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
-            imageCopy[i][j] = image[i/2 + 127][j/2 + 127];
+            imageCopy[i][j] = image[i / 2 + 127][j / 2 + 127];
         }
     }
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            image[i][j]= imageCopy[i][j];
+            image[i][j] = imageCopy[i][j];
         }
     }
 }
@@ -400,8 +400,8 @@ void enlarge() {
     cout << "3- Lower left" << '\n';
     cout << "4- Lower Right" << '\n';
     char choice{};
-    cout<<"Enter the quarter you want to change: "<<'\n';
-    cin>>choice;
+    cout << "Enter the quarter you want to change: " << '\n';
+    cin >> choice;
     if (choice == '1')
         enlarge_upper_left();
     else if (choice == '2')
@@ -414,7 +414,108 @@ void enlarge() {
 
 void shrink() {}
 
-void shuffle() {}
+void shuffle() {
+    unsigned char upper_left[SIZE][SIZE];
+    unsigned char upper_right[SIZE][SIZE];
+    unsigned char lower_left[SIZE][SIZE];
+    unsigned char lower_right[SIZE][SIZE];
+    cout << "Enter the new order of quarters: ";
+    vector<int> v;
+    int cnt = 0;
+    for (int i = 0; i < 4; ++i) {
+        int num;
+        cin >> num;
+        if (1 <= num && num <= 4)
+            v.push_back(num), cnt++;
+    }
+    auto it = unique(v.begin(), v.begin() + cnt);
+    v.resize(distance(v.begin(), it));
+    if (v.size() != 4) {
+        cout << "Invalid order save the original image and try again" << '\n';
+        return;
+    }
+    for (int i = 0; i < 128; ++i) {
+        for (int j = 0; j < 128; ++j) {
+            upper_left[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < 128; ++i) {
+        for (int j = 128; j < 256; ++j) {
+            upper_right[i][j] = image[i][j];
+        }
+    }
+    for (int i = 128; i < 256; ++i) {
+        for (int j = 0; j < 128; ++j) {
+            lower_left[i][j] = image[i][j];
+        }
+    }
+    for (int i = 128; i < 256; ++i) {
+        for (int j = 128; j < 256; ++j) {
+            lower_right[i][j] = image[i][j];
+        }
+    }
+    for (int i = 0; i < 4; ++i) {
+        if (i == 0) {
+            for (int j = 0; j < 128; ++j) {
+                for (int k = 0; k < 128; ++k) {
+                    if (v[0] == 1)
+                        imageCopy[j][k] = upper_left[j][k];
+                    else if (v[0] == 2)
+                        imageCopy[j][k] = upper_right[j][k + 128];
+                    else if (v[0] == 3)
+                        imageCopy[j][k] = lower_left[j + 128][k];
+                    else if (v[0] == 4)
+                        imageCopy[j][k] = lower_right[j + 128][k + 128];
+                }
+            }
+        } else if (i == 1) {
+            for (int j = 0; j < 128; ++j) {
+                for (int k = 128; k < 256; ++k) {
+                    if (v[1] == 1)
+                        imageCopy[j][k] = upper_left[j][k - 128];
+                    else if (v[1] == 2)
+                        imageCopy[j][k] = upper_right[j][k];
+                    else if (v[1] == 3)
+                        imageCopy[j][k] = lower_left[j + 128][k - 128];
+                    else if (v[1] == 4)
+                        imageCopy[j][k] = lower_right[j + 128][k];
+                }
+            }
+        } else if (i == 2) {
+            for (int j = 128; j < 256; ++j) {
+                for (int k = 0; k < 128; ++k) {
+                    if (v[2] == 1)
+                        imageCopy[j][k] = upper_left[j - 128][k];
+                    else if (v[2] == 2)
+                        imageCopy[j][k] = upper_right[j - 128][k + 128];
+                    else if (v[2] == 3)
+                        imageCopy[j][k] = lower_left[j][k];
+                    else if (v[2] == 4)
+                        imageCopy[j][k] = lower_right[j][k + 128];
+                }
+            }
+        } else if (i == 3) {
+            for (int j = 128; j < 256; ++j) {
+                for (int k = 128; k < 256; ++k) {
+                    if (v[3] == 1)
+                        imageCopy[j][k] = upper_left[j - 128][k - 128];
+                    else if (v[3] == 2)
+                        imageCopy[j][k] = upper_right[j - 128][k];
+                    else if (v[3] == 3)
+                        imageCopy[j][k] = lower_left[j][k - 128];
+                    else if (v[3] == 4)
+                        imageCopy[j][k] = lower_right[j][k];
+                }
+            }
+        }
+    }
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            image[i][j] = imageCopy[i][j];
+        }
+    }
+
+}
 
 void mirror() {}
 
