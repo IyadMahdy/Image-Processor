@@ -430,10 +430,11 @@ void shuffle() {
     }
     auto it = unique(v.begin(), v.begin() + cnt);
     v.resize(distance(v.begin(), it));
-    if (v.size() != 4) {
+    if (v.size() != 4) { //check if the vector has only numbers from 1 to 4
         cout << "Invalid order save the original image and try again" << '\n';
         return;
     }
+    //add each quarter of the original image to a separate 2d array
     for (int i = 0; i < 128; ++i) {
         for (int j = 0; j < 128; ++j) {
             upper_left[i][j] = image[i][j];
@@ -455,7 +456,7 @@ void shuffle() {
         }
     }
     for (int i = 0; i < 4; ++i) {
-        if (i == 0) {
+        if (i == 0) { //choose which quarter of the original image to add to the first quarter of the new image
             for (int j = 0; j < 128; ++j) {
                 for (int k = 0; k < 128; ++k) {
                     if (v[0] == 1)
@@ -468,7 +469,7 @@ void shuffle() {
                         imageCopy[j][k] = lower_right[j + 128][k + 128];
                 }
             }
-        } else if (i == 1) {
+        } else if (i == 1) { //choose which quarter of the original image to add to the second quarter of the new image
             for (int j = 0; j < 128; ++j) {
                 for (int k = 128; k < 256; ++k) {
                     if (v[1] == 1)
@@ -481,7 +482,7 @@ void shuffle() {
                         imageCopy[j][k] = lower_right[j + 128][k];
                 }
             }
-        } else if (i == 2) {
+        } else if (i == 2) { //choose which quarter of the original image to add to the third quarter of the new image
             for (int j = 128; j < 256; ++j) {
                 for (int k = 0; k < 128; ++k) {
                     if (v[2] == 1)
@@ -494,7 +495,7 @@ void shuffle() {
                         imageCopy[j][k] = lower_right[j][k + 128];
                 }
             }
-        } else if (i == 3) {
+        } else if (i == 3) { //choose which quarter of the original image to add to the fourth quarter of the new image
             for (int j = 128; j < 256; ++j) {
                 for (int k = 128; k < 256; ++k) {
                     if (v[3] == 1)
