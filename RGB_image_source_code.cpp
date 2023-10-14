@@ -210,7 +210,24 @@ void invert() {
     }
 }
 
-void merge() {}
+void merge() {
+    unsigned char image2[SIZE][SIZE][RGB];
+    char imageFileName[100];
+    cout << "Enter another source image file name: ";
+    cin >> imageFileName;
+
+    // Add to it .bmp extension and load image
+    strcat(imageFileName, ".bmp");
+    readRGBBMP(imageFileName, image2);
+
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = (image[i][j][k] + image2[i][j][k]) / 2;
+            }
+        }
+    }
+}
 
 void flip() {}
 
