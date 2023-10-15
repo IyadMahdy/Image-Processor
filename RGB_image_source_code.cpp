@@ -298,15 +298,92 @@ void darken_and_lighten() {}
 
 void detect_edges() {}
 
-void enlarge_upper_left() {}
+void enlarge_upper_left() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageCopy[i][j][k] = image[i / 2][j / 2][k];
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
-void enlarge_upper_right() {}
+void enlarge_upper_right() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageCopy[i][j][k] = image[i / 2][j / 2 + 127][k];
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
-void enlarge_lower_left() {}
+void enlarge_lower_left() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageCopy[i][j][k] = image[i / 2 + 127][j / 2][k];
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
-void enlarge_lower_right() {}
+void enlarge_lower_right() {
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                imageCopy[i][j][k] = image[i / 2 + 127][j / 2 + 127][k];
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
-void enlarge() {}
+void enlarge() {
+    cout << "Options: " << '\n';
+    cout << "1- Upper left" << '\n';
+    cout << "2- Upper right" << '\n';
+    cout << "3- Lower left" << '\n';
+    cout << "4- Lower Right" << '\n';
+    char choice{};
+    cout << "Enter the quarter you want to change: " << '\n';
+    cin >> choice;
+    if (choice == '1')
+        enlarge_upper_left();
+    else if (choice == '2')
+        enlarge_upper_right();
+    else if (choice == '3')
+        enlarge_lower_left();
+    else if (choice == '4')
+        enlarge_lower_right();
+}
 
 void shrink() {}
 
