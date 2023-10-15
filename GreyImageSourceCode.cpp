@@ -412,7 +412,74 @@ void enlarge() {
         enlarge_lower_right();
 }
 
-void shrink() {}
+void shrink_half() {
+    int cnt1 = 0; //take the average of 4 adjacent pixels together
+    for (int i = 0; i < SIZE - 2; i += 2) {
+        int cnt2 = 0;
+        for (int j = 0; j < SIZE - 2; j += 2) {
+            image[cnt1][cnt2] =
+                    (imageCopy[i][j] + imageCopy[i + 1][j] + imageCopy[i][j + 1] + imageCopy[i + 1][j + 1]) / 4;
+            cnt2++;
+        }
+        cnt1++;
+    }
+}
+
+void shrink_quarter() {
+    int cnt1 = 0; //take the average of 4 adjacent pixels together for two times
+    for (int i = 0; i < SIZE - 2; i += 2) {
+        int cnt2 = 0;
+        for (int j = 0; j < SIZE - 2; j += 2) {
+            image[cnt1][cnt2] =
+                    (imageCopy[i][j] + imageCopy[i + 1][j] + imageCopy[i][j + 1] + imageCopy[i + 1][j + 1]) / 4;
+            cnt2++;
+        }
+        cnt1++;
+    }
+    int cnt3 = 0;
+    for (int i = 0; i < SIZE - 2; i += 2) {
+        int cnt4 = 0;
+        for (int j = 0; j < SIZE - 2; j += 2) {
+            image[cnt3][cnt4] = (image[i][j] + image[i + 1][j] + image[i][j + 1] + image[i + 1][j + 1]) / 4;
+            cnt4++;
+        }
+        cnt3++;
+    }
+}
+
+void shrink_third() {
+    int cnt1 = 0; //take the average of 9 adjacent pixels together
+    for (int i = 0; i < SIZE - 2; i += 3) {
+        int cnt2 = 0;
+        for (int j = 0; j < SIZE - 2; j += 3) {
+            image[cnt1][cnt2] = (imageCopy[i][j] + imageCopy[i + 1][j] + imageCopy[i + 2][j] + imageCopy[i + 1][j] +
+                                 imageCopy[i + 1][j + 1] + imageCopy[i + 1][j + 2] + imageCopy[i + 2][j] +
+                                 imageCopy[i + 2][j + 1] + imageCopy[i + 2][j + 2]) / 9;
+            cnt2++;
+        }
+        cnt1++;
+    }
+}
+
+void shrink() {
+    cout << "Shrink to (1/2) , (1/3) or (1/4) ?" << '\n';
+    string choice;
+    cout << "Choice: ";
+    cin >> choice;
+    for (int i = 0; i < SIZE; ++i) { //make a copy of the image and make the original image white
+        for (int j = 0; j < SIZE; ++j) {
+            imageCopy[i][j] = image[i][j];
+            image[i][j] = 255;
+        }
+    }
+    if (choice == "1/2")
+        shrink_half();
+    else if (choice == "1/4")
+        shrink_quarter();
+    else if (choice == "1/3")
+        shrink_third();
+
+}
 
 void shuffle() {
     unsigned char upper_left[SIZE][SIZE];
