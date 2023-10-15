@@ -339,7 +339,26 @@ void darken_and_lighten() {
     }
 }
 
-void detect_edges() {}
+void detect_edges() {
+    bool trigger = false;
+    for (int row = 0; row < SIZE; row++) {
+        for (int pixel = 0; pixel < SIZE; pixel++) {
+            if (image[row][pixel] <= SIZE / 2 && !trigger)
+                trigger = true;
+            else if (image[row][pixel] > SIZE / 2 && trigger)
+                trigger = false;
+            else if (image[row][pixel] <= SIZE / 2 && trigger)
+                image[row][pixel] = 255;
+            else if (image[row][pixel] > SIZE / 2 && !trigger)
+                image[row][pixel] = 255;
+            if ((pixel == 255 || image[row][pixel+1] > SIZE/2) && trigger)
+                {
+                    image[row][pixel] = 0;
+                    trigger = false;
+                }
+        }
+    }
+}
 
 void enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
