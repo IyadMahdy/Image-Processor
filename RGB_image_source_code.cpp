@@ -198,7 +198,16 @@ void imageProcessor(char option) {
     }
 }
 
-void black_and_white() {}
+void black_and_white() {
+    for (auto &row: image) {
+        for (auto &pixel: row) {
+            if (pixel[0] + pixel[1] + pixel[2] > (SIZE * 3) / 2)
+                pixel[0] = 255, pixel[1] = 255, pixel[2] = 255;
+            else
+                pixel[0] = 0, pixel[1] = 0, pixel[2] = 0;
+        }
+    }
+}
 
 void invert() {
     for (auto &row: image) {
