@@ -7,6 +7,8 @@
 using namespace std;
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char imageCopy[SIZE][SIZE][RGB];
+const int SOBEL_X[3][3] = {{ 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 }};
+const int SOBEL_Y[3][3] = {{ 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 }};
 
 void loadImage();
 
@@ -329,7 +331,75 @@ void rotate() {
 
 void darken_and_lighten() {}
 
-void detect_edges() {}
+void detect_edges() {
+    int bw_image[SIZE][SIZE];
+    int sum;
+
+    // Convert RGB into Black and White
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            sum = 0;
+            for (int k = 0; k < RGB; ++k)
+                sum += image[i][j][k];
+            if (sum >= (SIZE * 3) / 2)
+                bw_image[i][j] = 255;
+            else
+                bw_image[i][j] = 0;
+        }
+    }
+
+    // Using same algorithm for Black and White Edge Detection
+    int gradient_x[SIZE][SIZE];
+    int gradient_y[SIZE][SIZE];
+
+    for (int i = 0; i < 256; i++) {
+        for (int j = 0; j < 256; j++) {
+        // Apply the Sobel operator to the pixel.
+        int sobel_x = 0;
+        int sobel_y = 0;
+
+        for (int k = -1; k <= 1; k++) {
+            for (int l = -1; l <= 1; l++) {
+            sobel_x += SOBEL_X[k + 1][l + 1] * bw_image[i + k][j + l];
+            sobel_y += SOBEL_Y[k + 1][l + 1] * bw_image[i + k][j + l];
+            }
+        }
+
+        // Compute the magnitude of the gradient.
+        gradient_x[i][j] = sobel_x;
+        gradient_y[i][j] = sobel_y;
+        }
+    }
+
+    // 2-D Boolean Array to identify the image that are edges
+    bool edge_detector[SIZE][SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            edge_detector[i][j] = 
+            (gradient_x[i][j] * gradient_x[i][j] + gradient_y[i][j] * gradient_y[i][j])
+             > 0.5 * 0.5;
+        }
+    }
+
+    int new_image[SIZE][SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (edge_detector[i][j] && (edge_detector[i + 1][j] || edge_detector[i - 1][j] || edge_detector[i][j + 1] || edge_detector[i][j - 1])) {
+        new_image[i][j] = 0;
+      } else {
+        new_image[i][j] = 255;
+      }
+        }
+    }
+
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+        image[i][j][0] = new_image[i][j],
+        image[i][j][1] = new_image[i][j],
+        image[i][j][2] = new_image[i][j];
+        }
+    }
+}
 
 void enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
