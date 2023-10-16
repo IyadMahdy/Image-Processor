@@ -198,7 +198,16 @@ void imageProcessor(char option) {
     }
 }
 
-void black_and_white() {}
+void black_and_white() {
+    for (auto &row: image) {
+        for (auto &pixel: row) {
+            if (pixel[0] + pixel[1] + pixel[2] > (SIZE * 3) / 2)
+                pixel[0] = 255, pixel[1] = 255, pixel[2] = 255;
+            else
+                pixel[0] = 0, pixel[1] = 0, pixel[2] = 0;
+        }
+    }
+}
 
 void invert() {
     for (auto &row: image) {
@@ -229,7 +238,31 @@ void merge() {
     }
 }
 
-void flip() {}
+void flip() {
+    char choice;
+
+    cout << "1- Flip Horizontally\n" << "2- Flip vertically\n" << "Choice: ";
+    cin >> choice;
+
+    if (choice == '2')
+        for (auto &i: image) {
+            for (int j = 0; j < SIZE / 2; ++j) {
+                swap(i[j][0], i[SIZE - j - 1][0]),
+                swap(i[j][1], i[SIZE - j - 1][1]),
+                swap(i[j][2], i[SIZE - j - 1][2]);
+            }
+        }
+    else if (choice == '1') {
+        for (int i = 0; i < SIZE / 2; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                swap(image[i][j][0], image[SIZE - i - 1][j][0]),
+                swap(image[i][j][1], image[SIZE - i - 1][j][1]),
+                swap(image[i][j][2], image[SIZE - i - 1][j][2]);
+            }
+        }
+    } else
+        cout << "Invalid choice";
+}
 
 void rotate_90() {
     for (int i = 0; i < SIZE; ++i) {
