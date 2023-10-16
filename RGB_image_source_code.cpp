@@ -496,7 +496,39 @@ void mirror() {}
 
 void blur() {}
 
-void crop() {}
+void crop() {
+    int cropped_image[SIZE][SIZE][RGB];
+    int x, y, l, w;
+    
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            cropped_image[i][j][0] = 255,
+            cropped_image[i][j][1] = 255,
+            cropped_image[i][j][2] = 255;
+        }
+    }
+
+    cout << "Enter the point to start cropping from (x, y): ";
+    cin >> x >> y;
+    cout << "Enter the length and width (l, w): ";
+    cin >> l >> w;
+
+    for (int i = x; i < x + w; i++) {
+        for (int j = y; j < y + l; j++) {
+            cropped_image[i][j][0] = image[i][j][0],
+            cropped_image[i][j][1] = image[i][j][1],
+            cropped_image[i][j][2] = image[i][j][2];
+        }
+    }
+    
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j][0] = cropped_image[i][j][0],
+            image[i][j][1] = cropped_image[i][j][1],
+            image[i][j][2] = cropped_image[i][j][2];
+        }
+    }
+}
 
 void skew_horizontal() {}
 
