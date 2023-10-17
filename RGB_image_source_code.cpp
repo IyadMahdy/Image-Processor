@@ -60,6 +60,14 @@ void shrink();
 
 void shuffle();
 
+void mirrorLeft();
+
+void mirrorRight();
+
+void mirrorUpper();
+
+void mirrorDown();
+
 void mirror();
 
 void blur();
@@ -529,7 +537,62 @@ void shrink() {}
 
 void shuffle() {}
 
-void mirror() {}
+void mirror() {
+    cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
+    char choice;
+    cout<<"Choice: ";
+    cin >> choice;
+    if (choice == 'l')
+        mirrorLeft();
+    else if (choice == 'r')
+        mirrorRight();
+    else if (choice == 'u')
+        mirrorUpper();
+    else if (choice == 'd')
+        mirrorDown();
+    else
+        cout << "Invalid Choice" << endl;
+}
+
+void mirrorLeft() {
+    for (auto &i: image) {
+        for (int j = 0; j < SIZE / 2; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                i[255 - j][k] = i[j][k];
+            }
+        }
+    }
+}
+
+void mirrorRight() {
+    for (auto &i: image) {
+        for (int j = 0; j < SIZE / 2; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                i[j][k] = i[255 - j][k];
+            }
+        }
+    }
+}
+
+void mirrorUpper() {
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                image[255 - i][j][k] = image[i][j][k];
+            }
+        }
+    }
+}
+
+void mirrorDown() {
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = image[255 - i][j][k];
+            }
+        }
+    }
+}
 
 void blur() {}
 

@@ -653,6 +653,7 @@ void shuffle() {
 void mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
     char choice;
+    cout<<"Choice: ";
     cin >> choice;
     if (choice == 'l')
         mirrorLeft();
