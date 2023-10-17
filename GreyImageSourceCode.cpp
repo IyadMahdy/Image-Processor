@@ -63,8 +63,11 @@ void shuffle();
 void mirror();
 
 void mirrorLeft();
+
 void mirrorRight();
+
 void mirrorUpper();
+
 void mirrorDown();
 
 void blur();
@@ -645,7 +648,6 @@ void shuffle() {
             image[i][j] = imageCopy[i][j];
         }
     }
-
 }
 
 void mirror() {
@@ -664,52 +666,75 @@ void mirror() {
         cout << "Invalid Choice" << endl;
 }
 
-void mirrorLeft(){
-    for (int i = 0; i <SIZE ; i++){
-        for (int j = 0; j < SIZE/2; j++)
-        {
-            image[i][255-j] = image[i][j];
+void mirrorLeft() {
+    for (auto &i: image) {
+        for (int j = 0; j < SIZE / 2; j++) {
+            i[255 - j] = i[j];
         }
-        
-    }
-}
-void mirrorRight(){
-    for (int i = 0; i <SIZE ; i++){
-        for (int j = 0; j < SIZE/2; j++)
-        {
-            image[i][j] = image[i][255-j];
-        }
-        
-    }
-}
-void mirrorUpper(){
-    for (int i = 0; i <SIZE/2 ; i++){
-        for (int j = 0; j < SIZE; j++)
-        {
-            image[255-i][j] = image[i][j];
-        }
-        
-    }
-}
-void mirrorDown(){
-    for (int i = 0; i <SIZE/2 ; i++){
-        for (int j = 0; j < SIZE; j++)
-        {
-            image[i][j] = image[255-i][j];
-        }
-        
     }
 }
 
-void blur() {}
+void mirrorRight() {
+    for (auto &i: image) {
+        for (int j = 0; j < SIZE / 2; j++) {
+            i[j] = i[255 - j];
+        }
+    }
+}
+
+void mirrorUpper() {
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[255 - i][j] = image[i][j];
+        }
+    }
+}
+
+void mirrorDown() {
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = image[255 - i][j];
+        }
+    }
+}
+
+void blur() {
+    // it takes the intensity number from the user
+    cout << "Please enter the intensity of the blur effect \n";
+    cout << "HINT : Please enter a number from 1 to 9 \n";
+    cout << "Choice : ";
+    int intensity;
+    cin >> intensity;
+
+    for (int i = intensity; i < SIZE - intensity; i++) {
+        for (int j = intensity; j < SIZE - intensity; j++) {
+            int avg = 0;
+
+            // adding the color of these group of pixels then diving by the number of them
+            for (int k = i - intensity; k <= i + intensity; k++) {
+                for (int l = j - intensity; l <= j + intensity; l++) {
+                    avg += image[k][l];
+                }
+            }
+            avg /= (int) pow((2 * intensity + 1), 2);
+
+            // filling the correspondent pixels with the blurred average in the new image
+            for (int k = i - intensity; k <= i + intensity; k++) {
+                for (int l = j - intensity; l <= j + intensity; l++) {
+                    image[k][l] = avg;
+                }
+            }
+        }
+    }
+}
 
 void crop() {
     int cropped_image[SIZE][SIZE];
     int x, y, l, w;
 
-    for (int i = 0; i < SIZE; ++i) {
-        for (int j = 0; j < SIZE; ++j) {
-            cropped_image[i][j] = 255;
+    for (auto &i: cropped_image) {
+        for (int &j: i) {
+            j = 255;
         }
     }
 
