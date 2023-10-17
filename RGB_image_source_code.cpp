@@ -333,7 +333,39 @@ void rotate() {
     }
 }
 
-void darken_and_lighten() {}
+void darken_and_lighten() {
+    cout << "1- Darken Image" << endl;
+    cout << "2- Lighten Image" << endl;
+    char d_l;
+    cout << "Your Choice : ";
+    cin >> d_l;
+
+    switch (d_l) {
+        case '1':
+            for (auto &i: image) {
+                for (auto &j: i) {
+                    for (unsigned char &k: j) {
+                        if (k > 2)
+                            k = k - (k / 2);
+                    }
+                }
+            }
+            break;
+
+        case '2':
+            for (auto &i: image) {
+                for (auto &j: i) {
+                    for (unsigned char &k: j) {
+                        if (k < 196)
+                            k += 60;
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 void detect_edges() {
     int bw_image[SIZE][SIZE];

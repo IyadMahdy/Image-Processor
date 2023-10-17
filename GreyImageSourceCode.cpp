@@ -336,7 +336,6 @@ void darken_and_lighten() {
                 for (unsigned char &pixel: row) {
                     if (pixel > 2)
                         pixel = pixel - (pixel / 2);
-
                 }
             }
             break;
@@ -344,7 +343,8 @@ void darken_and_lighten() {
         case '2':
             for (auto &row: image) {
                 for (unsigned char &pixel: row) {
-                    if (pixel < 196) pixel += 60;
+                    if (pixel < 196)
+                        pixel += 60;
                 }
             }
             break;
