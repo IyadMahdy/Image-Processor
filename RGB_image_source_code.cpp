@@ -535,12 +535,131 @@ void enlarge() {
 
 void shrink() {}
 
-void shuffle() {}
+void shuffle() {
+    unsigned char upper_left[SIZE][SIZE][RGB];
+    unsigned char upper_right[SIZE][SIZE][RGB];
+    unsigned char lower_left[SIZE][SIZE][RGB];
+    unsigned char lower_right[SIZE][SIZE][RGB];
+    cout << "Enter the new order of quarters: ";
+    vector<int> v;
+    int cnt = 0;
+    for (int i = 0; i < 4; ++i) {
+        int num;
+        cin >> num;
+        if (1 <= num && num <= 4)
+            v.push_back(num), cnt++;
+    }
+    auto it = unique(v.begin(), v.begin() + cnt);
+    v.resize(distance(v.begin(), it));
+    if (v.size() != 4) { //check if the vector has only numbers from 1 to 4
+        cout << "Invalid order save the original image and try again" << '\n';
+        return;
+    }
+    //add each quarter of the original image to a separate 2d array
+    for (int i = 0; i < 128; ++i) {
+        for (int j = 0; j < 128; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                upper_left[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    for (int i = 0; i < 128; ++i) {
+        for (int j = 128; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                upper_right[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    for (int i = 128; i < 256; ++i) {
+        for (int j = 0; j < 128; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                lower_left[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    for (int i = 128; i < 256; ++i) {
+        for (int j = 128; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                lower_right[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    for (int i = 0; i < 4; ++i) {
+        if (i == 0) { //choose which quarter of the original image to add to the first quarter of the new image
+            for (int j = 0; j < 128; ++j) {
+                for (int k = 0; k < 128; ++k) {
+                    for (int l = 0; l < RGB; ++l) {
+                        if (v[0] == 1)
+                            imageCopy[j][k][l] = upper_left[j][k][l];
+                        else if (v[0] == 2)
+                            imageCopy[j][k][l] = upper_right[j][k + 128][l];
+                        else if (v[0] == 3)
+                            imageCopy[j][k][l] = lower_left[j + 128][k][l];
+                        else if (v[0] == 4)
+                            imageCopy[j][k][l] = lower_right[j + 128][k + 128][l];
+                    }
+                }
+            }
+        } else if (i == 1) { //choose which quarter of the original image to add to the second quarter of the new image
+            for (int j = 0; j < 128; ++j) {
+                for (int k = 128; k < 256; ++k) {
+                    for (int l = 0; l < RGB; ++l) {
+                        if (v[1] == 1)
+                            imageCopy[j][k][l] = upper_left[j][k - 128][l];
+                        else if (v[1] == 2)
+                            imageCopy[j][k][l] = upper_right[j][k][l];
+                        else if (v[1] == 3)
+                            imageCopy[j][k][l] = lower_left[j + 128][k - 128][l];
+                        else if (v[1] == 4)
+                            imageCopy[j][k][l] = lower_right[j + 128][k][l];
+                    }
+                }
+            }
+        } else if (i == 2) { //choose which quarter of the original image to add to the third quarter of the new image
+            for (int j = 128; j < 256; ++j) {
+                for (int k = 0; k < 128; ++k) {
+                    for (int l = 0; l < RGB; ++l) {
+                        if (v[2] == 1)
+                            imageCopy[j][k][l] = upper_left[j - 128][k][l];
+                        else if (v[2] == 2)
+                            imageCopy[j][k][l] = upper_right[j - 128][k + 128][l];
+                        else if (v[2] == 3)
+                            imageCopy[j][k][l] = lower_left[j][k][l];
+                        else if (v[2] == 4)
+                            imageCopy[j][k][l] = lower_right[j][k + 128][l];
+                    }
+                }
+            }
+        } else if (i == 3) { //choose which quarter of the original image to add to the fourth quarter of the new image
+            for (int j = 128; j < 256; ++j) {
+                for (int k = 128; k < 256; ++k) {
+                    for (int l = 0; l < RGB; ++l) {
+                        if (v[3] == 1)
+                            imageCopy[j][k][l] = upper_left[j - 128][k - 128][l];
+                        else if (v[3] == 2)
+                            imageCopy[j][k][l] = upper_right[j - 128][k][l];
+                        else if (v[3] == 3)
+                            imageCopy[j][k][l] = lower_left[j][k - 128][l];
+                        else if (v[3] == 4)
+                            imageCopy[j][k][l] = lower_right[j][k][l];
+                    }
+                }
+            }
+        }
+    }
+    for (int i = 0; i < 256; ++i) {
+        for (int j = 0; j < 256; ++j) {
+            for (int k = 0; k < RGB; ++k) {
+                image[i][j][k] = imageCopy[i][j][k];
+            }
+        }
+    }
+}
 
 void mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
     char choice;
-    cout<<"Choice: ";
+    cout << "Choice: ";
     cin >> choice;
     if (choice == 'l')
         mirrorLeft();
