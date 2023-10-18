@@ -1,3 +1,13 @@
+/*
+ FCAI – OOP Programming – 2023 - Assignment 1
+ Program Name: RGB_image_source_code.cpp
+ Last Modification Date: 18/10/2023
+ Author1 and ID and Group: Kirolos Adel Nan     20220253   B
+ Author2 and ID and Group: Mario Michel Magdy   20220266   A
+ Author3 and ID and Group: Iyad Mahdy Mahrous   20220075   A
+ Purpose: A cpp program for image processing to apply 15 filters on RGB Bitmap images of 256x256 size
+*/
+
 #include <bits/stdc++.h>
 #include <fstream>
 #include <cstring>
@@ -724,10 +734,7 @@ void blur() {
     for (int i = intensity; i < SIZE - intensity; i++) {
         for (int j = intensity; j < SIZE - intensity; j++) {
             for (int m = 0; m < RGB; ++m) {
-
-
                 int avg = 0;
-
                 // adding the color of these group of pixels then diving by the number of them
                 for (int k = i - intensity; k <= i + intensity; k++) {
                     for (int l = j - intensity; l <= j + intensity; l++) {
