@@ -91,7 +91,12 @@ void skew_vertical();
 
 int main() {
     loadImage();
-    doSomethingForImage();
+    while (true) {
+        char option = options();
+        if (option == '0')
+            break;
+        imageProcessor(option);
+    }
     saveImage();
     return 0;
 }
@@ -123,11 +128,6 @@ void saveImage() {
 }
 
 //_________________________________________
-void doSomethingForImage() {
-    char choice = options();
-    imageProcessor(choice);
-}
-
 char options() {
     char choice;
 
@@ -147,6 +147,7 @@ char options() {
     cout << "d- Crop image" << endl;
     cout << "e- Skew horizontally" << endl;
     cout << "f- Skew vertically" << endl;
+    cout << "0- Exit & save changes" << endl;
 
     cout << "Choice: ";
     cin >> choice;
@@ -662,7 +663,7 @@ void shuffle() {
 void mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
     char choice;
-    cout<<"Choice: ";
+    cout << "Choice: ";
     cin >> choice;
     if (choice == 'l')
         mirrorLeft();
