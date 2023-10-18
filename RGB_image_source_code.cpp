@@ -713,7 +713,39 @@ void mirrorDown() {
     }
 }
 
-void blur() {}
+void blur() {
+    // it takes the intensity number from the user
+    cout << "Please enter the intensity of the blur effect \n";
+    cout << "HINT : Please enter a number from 1 to 9 \n";
+    cout << "Choice : ";
+    int intensity;
+    cin >> intensity;
+
+    for (int i = intensity; i < SIZE - intensity; i++) {
+        for (int j = intensity; j < SIZE - intensity; j++) {
+            for (int m = 0; m < RGB; ++m) {
+
+
+                int avg = 0;
+
+                // adding the color of these group of pixels then diving by the number of them
+                for (int k = i - intensity; k <= i + intensity; k++) {
+                    for (int l = j - intensity; l <= j + intensity; l++) {
+                        avg += image[k][l][m];
+                    }
+                }
+                avg /= (int) pow((2 * intensity + 1), 2);
+
+                // filling the correspondent pixels with the blurred average in the new image
+                for (int k = i - intensity; k <= i + intensity; k++) {
+                    for (int l = j - intensity; l <= j + intensity; l++) {
+                        image[k][l][m] = avg;
+                    }
+                }
+            }
+        }
+    }
+}
 
 void crop() {
     int cropped_image[SIZE][SIZE][RGB];
