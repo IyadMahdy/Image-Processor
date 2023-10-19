@@ -767,7 +767,50 @@ void crop() {
     }
 }
 
-void skew_horizontal() {}
+void skew_horizontal() {
+    unsigned char temp[SIZE][SIZE];
+    int new_image[SIZE][SIZE];
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            new_image[i][j]=255;
+        }
+    }
+    double degree;
+    cin >> degree;
+    double radians = degree * M_PI / 180.0;
+    double skewFactor = tan(radians);
+
+    double x=255/(255/(1+(1/skewFactor)));
+    double s=SIZE-(255/(1+(1/skewFactor)));
+    double m=s/SIZE;
+
+
+    // to shrink the photo
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if (i * x <= 255){
+                temp[i][j]=image[i* (int)x][j];
+            }
+
+        }
+    }
+    // to shift the shrinked image pixels
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j <(255/(1+(1/skewFactor))) ; ++j) {
+            new_image[j+(int )s][i]=temp[j][i];
+
+        }
+        s-=m;
+    }
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            image[i][j] = new_image[i][j];
+        }
+    }
+
+}
 
 void skew_vertical() {
     double rad;
