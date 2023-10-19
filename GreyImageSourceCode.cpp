@@ -769,4 +769,25 @@ void crop() {
 
 void skew_horizontal() {}
 
-void skew_vertical() {}
+void skew_vertical() {
+    double rad;
+    cin >> rad;
+    rad = ( rad * 22 ) / ( 180 * 7 ) ;
+    double mov = tan(rad) * 256 ;
+    double step = mov / SIZE ;
+    unsigned char img_in[SIZE][SIZE+(int)mov]  ;
+    for ( int i = 0 ; i < SIZE ; i++ )
+        for ( int j = 0 ; j < SIZE ; j++ )
+            img_in[i][j] = 255;
+    for ( int i = 0 ; i < SIZE ; i++ ){
+        for ( int j = 0 ; j < SIZE ; j++ ){
+            img_in[i][j+(int)mov] = image[i][j] ;
+        }
+        mov -= step ;
+    }
+    for ( int i = 0 ; i < SIZE ; i++ ){
+        for ( int j = 0 ; j < SIZE; j++ ){
+            image[i][j] = img_in[i][j] ;
+            }
+    }
+}

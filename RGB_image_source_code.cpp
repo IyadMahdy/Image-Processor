@@ -388,19 +388,14 @@ void darken_and_lighten() {
 }
 
 void detect_edges() {
-    int bw_image[SIZE][SIZE];
+    int gs_image[SIZE][SIZE];
     int sum;
 
-    // Convert RGB into Black and White
+    // Convert RGB into Greyscale
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            sum = 0;
-            for (int k = 0; k < RGB; ++k)
-                sum += image[i][j][k];
-            if (sum >= (SIZE * 3) / 2)
-                bw_image[i][j] = 255;
-            else
-                bw_image[i][j] = 0;
+            int avg = (image[i][j][0] + image[i][j][1] + image[i][j][2])/3;
+            gs_image[i][j] = avg;
         }
     }
 
@@ -416,8 +411,8 @@ void detect_edges() {
 
             for (int k = -1; k <= 1; k++) {
                 for (int l = -1; l <= 1; l++) {
-                    sobel_x += SOBEL_X[k + 1][l + 1] * bw_image[i + k][j + l];
-                    sobel_y += SOBEL_Y[k + 1][l + 1] * bw_image[i + k][j + l];
+                    sobel_x += SOBEL_X[k + 1][l + 1] * gs_image[i + k][j + l];
+                    sobel_y += SOBEL_Y[k + 1][l + 1] * gs_image[i + k][j + l];
                 }
             }
 
@@ -456,6 +451,8 @@ void detect_edges() {
             image[i][j][2] = new_image[i][j];
         }
     }
+
+    invert();
 }
 
 void enlarge_upper_left() {
