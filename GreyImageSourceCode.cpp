@@ -282,6 +282,7 @@ void flip() {
     } else
         cout << "Invalid choice";
 }
+
 //Makes the columns, rows, and the rows, inverse of the columns
 void rotate_90() {
     for (int i = 0; i < 256; ++i) {
@@ -290,6 +291,7 @@ void rotate_90() {
         }
     }
 }
+
 //Changes the row to 255 - row and column to 255-column
 void rotate_180() {
     for (int i = 0; i < 256; ++i) {
@@ -298,6 +300,7 @@ void rotate_180() {
         }
     }
 }
+
 //copy pixels from the original image to a temporary image in reverse order
 void rotate_270() {
     for (int i = 255; i >= 0; --i) {
@@ -306,6 +309,7 @@ void rotate_270() {
         }
     }
 }
+
 //Returns the original image
 void rotate_360() {
     for (auto &row: image) {
@@ -314,6 +318,7 @@ void rotate_360() {
         }
     }
 }
+
 //Gives the user 4 options to choose the angle of rotation
 void rotate() {
     cout << "Rotate (90), (180), (270) or (360) degrees?" << '\n';
@@ -335,6 +340,7 @@ void rotate() {
         rotate_360();
     }
 }
+
 //Darken the image by subtracting from the pixel half its value, and lightens the image by adding 60 to the pixel
 void darken_and_lighten() {
     cout << "1- Darken Image" << endl;
@@ -365,6 +371,7 @@ void darken_and_lighten() {
             break;
     }
 }
+
 //Sobel Operators are used to detect the x and y gradients of the image Forming a boolean image where 1 is an edge
 // and 0 isn’t an edge Filling up the images with black and white
 void detect_edges() {
@@ -420,6 +427,7 @@ void detect_edges() {
         }
     }
 }
+
 //Enlarges the image by putting the same pixel of the upper left quarter two times next to itself.
 void enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
@@ -433,6 +441,7 @@ void enlarge_upper_left() {
         }
     }
 }
+
 //Enlarges the image by putting the same pixel of the upper right quarter two times next to itself.
 void enlarge_upper_right() {
     for (int i = 0; i < 256; ++i) {
@@ -446,6 +455,7 @@ void enlarge_upper_right() {
         }
     }
 }
+
 //Enlarges the image by putting the same pixel of the lower left quarter two times next to itself.
 void enlarge_lower_left() {
     for (int i = 0; i < 256; ++i) {
@@ -459,6 +469,7 @@ void enlarge_lower_left() {
         }
     }
 }
+
 //Enlarges the image by putting the same pixel of the lower right quarter two times next to itself
 void enlarge_lower_right() {
     for (int i = 0; i < 256; ++i) {
@@ -472,6 +483,7 @@ void enlarge_lower_right() {
         }
     }
 }
+
 //Shows the user 4 options to choose which to enlarge
 void enlarge() {
     cout << "Options: " << '\n';
@@ -491,6 +503,7 @@ void enlarge() {
     else if (choice == '4')
         enlarge_lower_right();
 }
+
 //Shrinks the image to half by taking the average of 4 adjacent pixels.
 void shrink_half() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together
@@ -504,6 +517,7 @@ void shrink_half() {
         cnt1++;
     }
 }
+
 //Shrinks the image to quarter by applying the shrink half logic two times.
 void shrink_quarter() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together for two times
@@ -526,6 +540,7 @@ void shrink_quarter() {
         cnt3++;
     }
 }
+
 //Shrinks the image to third by taking the average of 9 adjacent pixels.
 void shrink_third() {
     int cnt1 = 0; //take the average of 9 adjacent pixels together
@@ -540,6 +555,7 @@ void shrink_third() {
         cnt1++;
     }
 }
+
 //Shows the user 3 ratios to shrink the image with.
 void shrink() {
     cout << "Shrink to (1/2) , (1/3) or (1/4) ?" << '\n';
@@ -560,6 +576,7 @@ void shrink() {
         shrink_third();
 
 }
+
 //Shuffles the four quarters of the images by the chosen order the user enters
 void shuffle() {
     unsigned char upper_left[SIZE][SIZE];
@@ -663,6 +680,7 @@ void shuffle() {
         }
     }
 }
+
 //Gives the user 4 options to choose which half to mirror
 void mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
@@ -680,6 +698,7 @@ void mirror() {
     else
         cout << "Invalid Choice" << endl;
 }
+
 //Makes the right pixel in the row equal to the corresponding left pixel in the same row
 void mirrorLeft() {
     for (auto &i: image) {
@@ -688,6 +707,7 @@ void mirrorLeft() {
         }
     }
 }
+
 //Makes the left pixel in the row equal to the corresponding right pixel in the same row
 void mirrorRight() {
     for (auto &i: image) {
@@ -696,6 +716,7 @@ void mirrorRight() {
         }
     }
 }
+
 //Makes the down pixel in the column equal to the corresponding upper pixel in the same column
 void mirrorUpper() {
     for (int i = 0; i < SIZE / 2; i++) {
@@ -704,6 +725,7 @@ void mirrorUpper() {
         }
     }
 }
+
 //Makes the upper pixel in the column equal to the corresponding down pixel in the same column
 void mirrorDown() {
     for (int i = 0; i < SIZE / 2; i++) {
@@ -712,6 +734,7 @@ void mirrorDown() {
         }
     }
 }
+
 //Takes the average of the corresponding pixels with respect to the intensity
 void blur() {
     int intensity = 2;
@@ -737,6 +760,7 @@ void blur() {
         }
     }
 }
+
 //crops an image from the original image and copies the cropped image back to the original image.
 // The cropping region is defined by the user's input.
 void crop() {
@@ -767,6 +791,104 @@ void crop() {
     }
 }
 
-void skew_horizontal() {}
+void skew_horizontal() {
+    // Create a temporary image to store the shrunken image.
+    unsigned char temp_image[SIZE][SIZE];
 
-void skew_vertical() {}
+// Initialize the image copy to all white pixels.
+    for (auto &i: imageCopy) {
+        for (unsigned char &j: i) {
+            j = 255;
+        }
+    }
+
+// Read in the skew angle from the user and convert it to radians.
+    double skew_degree;
+    cout << "Please enter the skew skew_degree: ";
+    cin >> skew_degree;
+    skew_degree = 90 - skew_degree;
+    double radians = skew_degree * M_PI / 180.0;
+
+// Calculate the skew factor, which is the tangent of the rotation angle.
+    double skewFactor = tan(radians);
+
+// Calculate the scaling factor and the shift distance.
+    double scaling_factor = 255 / (255 / (1 + (1 / skewFactor)));
+    double shift_distance = SIZE - (255 / (1 + (1 / skewFactor)));
+    double slope = shift_distance / SIZE;
+
+// Shrink the original image and copy it to the temporary array.
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if (i * scaling_factor <= 255) {
+                temp_image[i][j] = image[i * (int) scaling_factor][j];
+            }
+        }
+    }
+
+// Shift the pixels of the shrunken image to the left by the shift distance.
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < (255 / (1 + (1 / skewFactor))); ++j) {
+            imageCopy[j + (int) shift_distance][i] = temp_image[j][i];
+        }
+        shift_distance -= slope;
+    }
+
+// Copy the shifted image back to the original image.
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = imageCopy[i][j];
+        }
+    }
+}
+
+void skew_vertical() {
+    // Create a temporary image to store the shrunken image.
+    unsigned char temp_image[SIZE][SIZE];
+
+// Initialize the image copy to all white pixels.
+    for (auto &i: imageCopy) {
+        for (unsigned char &j: i) {
+            j = 255;
+        }
+    }
+
+// Read in the skew angle from the user and convert it to radians.
+    double skew_degree;
+    cout << "Please enter the skew skew_degree: ";
+    cin >> skew_degree;
+    skew_degree = 90 - skew_degree;
+    double radians = skew_degree * M_PI / 180.0;
+
+// Calculate the skew factor, which is the tangent of the rotation angle.
+    double skewFactor = tan(radians);
+
+// Calculate the scaling_factor and the shift_distance.
+    double scaling_factor = 255 / (255 / (1 + (1 / skewFactor)));
+    double shift_distance = SIZE - (255 / (1 + (1 / skewFactor)));
+    double slope = shift_distance / SIZE;
+
+// Shrink the original image and copy it to the temporary array.
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            if (j * scaling_factor <= 255) {
+                temp_image[i][j] = image[i][j * (int) scaling_factor];
+            }
+        }
+    }
+
+// Shift the pixels of the shrunken image to the left by the shift_distance factor.
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < (255 / (1 + (1 / skewFactor))); ++j) {
+            imageCopy[i][j + (int) shift_distance] = temp_image[i][j];
+        }
+        shift_distance -= slope;
+    }
+
+// Copy the shifted image back to the original image.
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            image[i][j] = imageCopy[i][j];
+        }
+    }
+}
