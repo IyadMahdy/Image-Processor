@@ -27,8 +27,6 @@ void loadImage();
 
 void saveImage();
 
-void doSomethingForImage();
-
 char options();
 
 void imageProcessor(char option);
@@ -222,6 +220,7 @@ void imageProcessor(char option) {
     }
 }
 
+//Changes image colors to black and white only if pixel value > 127 makes it white else makes it black
 void black_and_white() {
     for (auto &row: image) {
         for (unsigned char &pixel: row) {
@@ -233,6 +232,7 @@ void black_and_white() {
     }
 }
 
+//Invert the image colors by subtracting the pixel value from 255
 void invert() {
     for (auto &row: image) {
         for (unsigned char &pixel: row) {
@@ -241,6 +241,7 @@ void invert() {
     }
 }
 
+//Merges two images by taking the average value of the corresponding pixels in each image
 void merge() {
     unsigned char image2[SIZE][SIZE];
     char imageFileName[100];
@@ -258,6 +259,8 @@ void merge() {
     }
 }
 
+//Flips the image vertically by swaping the pixel with its corresponding pixel from the end of its row,
+// and horizontally by swaping the pixel with its corresponding pixel from the end of its column
 void flip() {
     char choice;
 
@@ -279,7 +282,7 @@ void flip() {
     } else
         cout << "Invalid choice";
 }
-
+//Makes the columns, rows, and the rows, inverse of the columns
 void rotate_90() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -287,7 +290,7 @@ void rotate_90() {
         }
     }
 }
-
+//Changes the row to 255 - row and column to 255-column
 void rotate_180() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -295,7 +298,7 @@ void rotate_180() {
         }
     }
 }
-
+//copy pixels from the original image to a temporary image in reverse order
 void rotate_270() {
     for (int i = 255; i >= 0; --i) {
         for (int j = 0; j < 256; ++j) {
@@ -303,7 +306,7 @@ void rotate_270() {
         }
     }
 }
-
+//Returns the original image
 void rotate_360() {
     for (auto &row: image) {
         for (unsigned char &pixel: row) {
@@ -311,7 +314,7 @@ void rotate_360() {
         }
     }
 }
-
+//Gives the user 4 options to choose the angle of rotation
 void rotate() {
     cout << "Rotate (90), (180), (270) or (360) degrees?" << '\n';
     int degree;
@@ -332,7 +335,7 @@ void rotate() {
         rotate_360();
     }
 }
-
+//Darken the image by subtracting from the pixel half its value, and lightens the image by adding 60 to the pixel
 void darken_and_lighten() {
     cout << "1- Darken Image" << endl;
     cout << "2- Lighten Image" << endl;
@@ -362,7 +365,8 @@ void darken_and_lighten() {
             break;
     }
 }
-
+//Sobel Operators are used to detect the x and y gradients of the image Forming a boolean image where 1 is an edge
+// and 0 isn’t an edge Filling up the images with black and white
 void detect_edges() {
     black_and_white();
 
@@ -416,7 +420,7 @@ void detect_edges() {
         }
     }
 }
-
+//Enlarges the image by putting the same pixel of the upper left quarter two times next to itself.
 void enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -429,7 +433,7 @@ void enlarge_upper_left() {
         }
     }
 }
-
+//Enlarges the image by putting the same pixel of the upper right quarter two times next to itself.
 void enlarge_upper_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -442,7 +446,7 @@ void enlarge_upper_right() {
         }
     }
 }
-
+//Enlarges the image by putting the same pixel of the lower left quarter two times next to itself.
 void enlarge_lower_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -455,7 +459,7 @@ void enlarge_lower_left() {
         }
     }
 }
-
+//Enlarges the image by putting the same pixel of the lower right quarter two times next to itself
 void enlarge_lower_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
@@ -468,7 +472,7 @@ void enlarge_lower_right() {
         }
     }
 }
-
+//Shows the user 4 options to choose which to enlarge
 void enlarge() {
     cout << "Options: " << '\n';
     cout << "1- Upper left" << '\n';
@@ -487,7 +491,7 @@ void enlarge() {
     else if (choice == '4')
         enlarge_lower_right();
 }
-
+//Shrinks the image to half by taking the average of 4 adjacent pixels.
 void shrink_half() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together
     for (int i = 0; i < SIZE - 2; i += 2) {
@@ -500,7 +504,7 @@ void shrink_half() {
         cnt1++;
     }
 }
-
+//Shrinks the image to quarter by applying the shrink half logic two times.
 void shrink_quarter() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together for two times
     for (int i = 0; i < SIZE - 2; i += 2) {
@@ -522,7 +526,7 @@ void shrink_quarter() {
         cnt3++;
     }
 }
-
+//Shrinks the image to third by taking the average of 9 adjacent pixels.
 void shrink_third() {
     int cnt1 = 0; //take the average of 9 adjacent pixels together
     for (int i = 0; i < SIZE - 2; i += 3) {
@@ -536,7 +540,7 @@ void shrink_third() {
         cnt1++;
     }
 }
-
+//Shows the user 3 ratios to shrink the image with.
 void shrink() {
     cout << "Shrink to (1/2) , (1/3) or (1/4) ?" << '\n';
     string choice;
@@ -556,7 +560,7 @@ void shrink() {
         shrink_third();
 
 }
-
+//Shuffles the four quarters of the images by the chosen order the user enters
 void shuffle() {
     unsigned char upper_left[SIZE][SIZE];
     unsigned char upper_right[SIZE][SIZE];
@@ -659,7 +663,7 @@ void shuffle() {
         }
     }
 }
-
+//Gives the user 4 options to choose which half to mirror
 void mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
     char choice;
@@ -676,7 +680,7 @@ void mirror() {
     else
         cout << "Invalid Choice" << endl;
 }
-
+//Makes the right pixel in the row equal to the corresponding left pixel in the same row
 void mirrorLeft() {
     for (auto &i: image) {
         for (int j = 0; j < SIZE / 2; j++) {
@@ -684,7 +688,7 @@ void mirrorLeft() {
         }
     }
 }
-
+//Makes the left pixel in the row equal to the corresponding right pixel in the same row
 void mirrorRight() {
     for (auto &i: image) {
         for (int j = 0; j < SIZE / 2; j++) {
@@ -692,7 +696,7 @@ void mirrorRight() {
         }
     }
 }
-
+//Makes the down pixel in the column equal to the corresponding upper pixel in the same column
 void mirrorUpper() {
     for (int i = 0; i < SIZE / 2; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -700,7 +704,7 @@ void mirrorUpper() {
         }
     }
 }
-
+//Makes the upper pixel in the column equal to the corresponding down pixel in the same column
 void mirrorDown() {
     for (int i = 0; i < SIZE / 2; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -708,14 +712,9 @@ void mirrorDown() {
         }
     }
 }
-
+//Takes the average of the corresponding pixels with respect to the intensity
 void blur() {
-    // it takes the intensity number from the user
-    cout << "Please enter the intensity of the blur effect \n";
-    cout << "HINT : Please enter a number from 1 to 9 \n";
-    cout << "Choice : ";
-    int intensity;
-    cin >> intensity;
+    int intensity = 2;
 
     for (int i = intensity; i < SIZE - intensity; i++) {
         for (int j = intensity; j < SIZE - intensity; j++) {
@@ -738,7 +737,8 @@ void blur() {
         }
     }
 }
-
+//crops an image from the original image and copies the cropped image back to the original image.
+// The cropping region is defined by the user's input.
 void crop() {
     int cropped_image[SIZE][SIZE];
     int x, y, l, w;
