@@ -1,108 +1,7 @@
-/*
- FCAI – OOP Programming – 2023 - Assignment 1
- Program Name: RGB_image_source_code.cpp
- Last Modification Date: 18/10/2023
- Author1 and ID and Group: Kirolos Adel Nan     20220253   B
- Author2 and ID and Group: Mario Michel Magdy   20220266   A
- Author3 and ID and Group: Iyad Mahdy Mahrous   20220075   A
- Purpose: A cpp program for image processing to apply 15 filters on RGB Bitmap images of 256x256 size
-*/
 
-#include <bits/stdc++.h>
-#include <fstream>
-#include <cstring>
-#include <cmath>
-#include "bmplib.cpp"
+#include "ColoredImageProcessor.h"
 
-using namespace std;
-unsigned char image[SIZE][SIZE][RGB];
-unsigned char imageCopy[SIZE][SIZE][RGB];
-const int SOBEL_X[3][3] = {{1, 0, -1},
-                           {2, 0, -2},
-                           {1, 0, -1}};
-const int SOBEL_Y[3][3] = {{1,  2,  1},
-                           {0,  0,  0},
-                           {-1, -2, -1}};
-
-void loadImage();
-
-void saveImage();
-
-
-char options();
-
-void imageProcessor(char option);
-
-void black_and_white();
-
-void invert();
-
-void merge();
-
-void flip();
-
-void rotate();
-
-void rotate_90();
-
-void rotate_180();
-
-void rotate_270();
-
-void rotate_360();
-
-void darken_and_lighten();
-
-void detect_edges();
-
-void enlarge_upper_left();
-
-void enlarge_upper_right();
-
-void enlarge_lower_left();
-
-void enlarge_lower_right();
-
-void enlarge();
-
-void shrink();
-
-void shuffle();
-
-void mirrorLeft();
-
-void mirrorRight();
-
-void mirrorUpper();
-
-void mirrorDown();
-
-void mirror();
-
-void blur();
-
-void crop();
-
-void skew_horizontal();
-
-void skew_vertical();
-
-//________________________________________
-
-int main() {
-    loadImage();
-    while (true) {
-        char option = options();
-        if (option == '0')
-            break;
-        imageProcessor(option);
-    }
-    saveImage();
-    return 0;
-}
-
-//_________________________________________
-void loadImage() {
+void ColoredImageProcessor::loadImage() {
     char imageFileName[100];
 
     // Get gray scale image file name
@@ -115,7 +14,7 @@ void loadImage() {
 }
 
 //_________________________________________
-void saveImage() {
+void ColoredImageProcessor::saveImage() {
     char imageFileName[100];
 
     // Get gray scale image target file name
@@ -129,7 +28,7 @@ void saveImage() {
 
 //_________________________________________
 
-char options() {
+char ColoredImageProcessor::options() {
     char choice;
 
     cout << "Options:" << endl;
@@ -156,7 +55,7 @@ char options() {
     return choice;
 }
 
-void imageProcessor(char option) {
+void ColoredImageProcessor::imageProcessor(char option) {
     switch (option) {
         case '1':
             black_and_white();
@@ -224,7 +123,7 @@ void imageProcessor(char option) {
 }
 
 //Changes image colors to black and white only if pixel value > 127 makes it white else makes it black
-void black_and_white() {
+void ColoredImageProcessor::black_and_white() {
     for (auto &row: image) {
         for (auto &pixel: row) {
             if (pixel[0] + pixel[1] + pixel[2] > (SIZE * 3) / 2)
@@ -236,7 +135,7 @@ void black_and_white() {
 }
 
 //Invert the image colors by subtracting the pixel value from 255
-void invert() {
+void ColoredImageProcessor::invert() {
     for (auto &row: image) {
         for (auto &pixel: row) {
             for (unsigned char &color: pixel) {
@@ -247,7 +146,7 @@ void invert() {
 }
 
 //Merges two images by taking the average value of the corresponding pixels in each image
-void merge() {
+void ColoredImageProcessor::merge() {
     unsigned char image2[SIZE][SIZE][RGB];
     char imageFileName[100];
     cout << "Enter another source image file name: ";
@@ -268,7 +167,7 @@ void merge() {
 
 //Flips the image vertically by swaping the pixel with its corresponding pixel from the end of its row,
 // and horizontally by swaping the pixel with its corresponding pixel from the end of its column
-void flip() {
+void ColoredImageProcessor::flip() {
     char choice;
 
     cout << "1- Flip Horizontally\n" << "2- Flip vertically\n" << "Choice: ";
@@ -295,7 +194,7 @@ void flip() {
 }
 
 //Makes the columns, rows, and the rows, inverse of the columns
-void rotate_90() {
+void ColoredImageProcessor::rotate_90() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -306,7 +205,7 @@ void rotate_90() {
 }
 
 //Changes the row to 255 - row and column to 255-column
-void rotate_180() {
+void ColoredImageProcessor::rotate_180() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -317,7 +216,7 @@ void rotate_180() {
 }
 
 //copy pixels from the original image to a temporary image in reverse order
-void rotate_270() {
+void ColoredImageProcessor::rotate_270() {
     for (int i = 255; i >= 0; --i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -328,7 +227,7 @@ void rotate_270() {
 }
 
 //Returns the original image
-void rotate_360() {
+void ColoredImageProcessor::rotate_360() {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -339,7 +238,7 @@ void rotate_360() {
 }
 
 //Gives the user 4 options to choose the angle of rotation
-void rotate() {
+void ColoredImageProcessor::rotate() {
     cout << "Rotate (90), (180), (270) or (360) degrees?" << '\n';
     int degree;
     cout << "Choice: ";
@@ -363,7 +262,7 @@ void rotate() {
 }
 
 //Darken the image by subtracting from the pixel half its value, and lightens the image by adding 60 to the pixel
-void darken_and_lighten() {
+void ColoredImageProcessor::darken_and_lighten() {
     cout << "1- Darken Image" << endl;
     cout << "2- Lighten Image" << endl;
     char d_l;
@@ -399,7 +298,7 @@ void darken_and_lighten() {
 
 //Sobel Operators are used to detect the x and y gradients of the image Forming a boolean image where 1 is an edge
 // and 0 isn’t an edge Filling up the images with black and white
-void detect_edges() {
+void ColoredImageProcessor::detect_edges() {
     int bw_image[SIZE][SIZE];
     int sum;
 
@@ -470,7 +369,7 @@ void detect_edges() {
 }
 
 //Enlarges the image by putting the same pixel of the upper left quarter two times next to itself.
-void enlarge_upper_left() {
+void ColoredImageProcessor::enlarge_upper_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -488,7 +387,7 @@ void enlarge_upper_left() {
 }
 
 //Enlarges the image by putting the same pixel of the upper right quarter two times next to itself.
-void enlarge_upper_right() {
+void ColoredImageProcessor::enlarge_upper_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -506,7 +405,7 @@ void enlarge_upper_right() {
 }
 
 //Enlarges the image by putting the same pixel of the lower left quarter two times next to itself.
-void enlarge_lower_left() {
+void ColoredImageProcessor::enlarge_lower_left() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -524,7 +423,7 @@ void enlarge_lower_left() {
 }
 
 //Enlarges the image by putting the same pixel of the lower right quarter two times next to itself
-void enlarge_lower_right() {
+void ColoredImageProcessor::enlarge_lower_right() {
     for (int i = 0; i < 256; ++i) {
         for (int j = 0; j < 256; ++j) {
             for (int k = 0; k < RGB; ++k) {
@@ -542,7 +441,7 @@ void enlarge_lower_right() {
 }
 
 //Shows the user 4 options to choose which to enlarge
-void enlarge() {
+void ColoredImageProcessor::enlarge() {
     cout << "Options: " << '\n';
     cout << "1- Upper left" << '\n';
     cout << "2- Upper right" << '\n';
@@ -562,7 +461,7 @@ void enlarge() {
 }
 
 //Shrinks the image to half by taking the average of 4 adjacent pixels.
-void shrink_half() {
+void ColoredImageProcessor::shrink_half() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together
     for (int i = 0; i < SIZE - 2; i += 2) {
         int cnt2 = 0;
@@ -578,7 +477,7 @@ void shrink_half() {
 }
 
 //Shrinks the image to quarter by applying the shrink half logic two times.
-void shrink_quarter() {
+void ColoredImageProcessor::shrink_quarter() {
     int cnt1 = 0; //take the average of 4 adjacent pixels together for two times
     for (int i = 0; i < SIZE - 2; i += 2) {
         int cnt2 = 0;
@@ -606,7 +505,7 @@ void shrink_quarter() {
 }
 
 //Shrinks the image to third by taking the average of 9 adjacent pixels.
-void shrink_third() {
+void ColoredImageProcessor::shrink_third() {
     int cnt1 = 0; //take the average of 9 adjacent pixels together
     for (int i = 0; i < SIZE - 2; i += 3) {
         int cnt2 = 0;
@@ -624,7 +523,7 @@ void shrink_third() {
 }
 
 //Shows the user 3 ratios to shrink the image with
-void shrink() {
+void ColoredImageProcessor::shrink() {
     cout << "Shrink to (1/2) , (1/3) or (1/4) ?" << '\n';
     string choice;
     cout << "Choice: ";
@@ -646,7 +545,7 @@ void shrink() {
 }
 
 //Shuffles the four quarters of the images by the chosen order the user enters
-void shuffle() {
+void ColoredImageProcessor::shuffle() {
     unsigned char upper_left[SIZE][SIZE][RGB];
     unsigned char upper_right[SIZE][SIZE][RGB];
     unsigned char lower_left[SIZE][SIZE][RGB];
@@ -768,7 +667,7 @@ void shuffle() {
 }
 
 //Gives the user 4 options to choose which half to mirror
-void mirror() {
+void ColoredImageProcessor::mirror() {
     cout << "mirror (l)eft , (r)ight, (u)pper, (d)own" << endl;
     char choice;
     cout << "Choice: ";
@@ -786,7 +685,7 @@ void mirror() {
 }
 
 //Makes the right pixel in the row equal to the corresponding left pixel in the same row
-void mirrorLeft() {
+void ColoredImageProcessor::mirrorLeft() {
     for (auto &i: image) {
         for (int j = 0; j < SIZE / 2; j++) {
             for (int k = 0; k < RGB; ++k) {
@@ -797,7 +696,7 @@ void mirrorLeft() {
 }
 
 //Makes the left pixel in the row equal to the corresponding right pixel in the same row
-void mirrorRight() {
+void ColoredImageProcessor::mirrorRight() {
     for (auto &i: image) {
         for (int j = 0; j < SIZE / 2; j++) {
             for (int k = 0; k < RGB; ++k) {
@@ -808,7 +707,7 @@ void mirrorRight() {
 }
 
 //Makes the down pixel in the column equal to the corresponding upper pixel in the same column
-void mirrorUpper() {
+void ColoredImageProcessor::mirrorUpper() {
     for (int i = 0; i < SIZE / 2; i++) {
         for (int j = 0; j < SIZE; j++) {
             for (int k = 0; k < RGB; ++k) {
@@ -819,7 +718,7 @@ void mirrorUpper() {
 }
 
 //Makes the upper pixel in the column equal to the corresponding down pixel in the same column
-void mirrorDown() {
+void ColoredImageProcessor::mirrorDown() {
     for (int i = 0; i < SIZE / 2; i++) {
         for (int j = 0; j < SIZE; j++) {
             for (int k = 0; k < RGB; ++k) {
@@ -830,7 +729,7 @@ void mirrorDown() {
 }
 
 //Takes the average of the corresponding pixels with respect to the intensity
-void blur() {
+void ColoredImageProcessor::blur() {
     int intensity = 2;
 
     for (int i = intensity; i < SIZE - intensity; i++) {
@@ -858,7 +757,7 @@ void blur() {
 
 //crops an image from the original image and copies the cropped image back to the original image.
 // The cropping region is defined by the user's input.
-void crop() {
+void ColoredImageProcessor::crop() {
     int cropped_image[SIZE][SIZE][RGB];
     int x, y, l, w;
 
@@ -892,7 +791,7 @@ void crop() {
     }
 }
 
-void skew_horizontal() {
+void ColoredImageProcessor::skew_horizontal() {
     // Create a temporary image to store the shrunken image.
     unsigned char temp_image[SIZE][SIZE][RGB];
 
@@ -951,7 +850,7 @@ void skew_horizontal() {
     }
 }
 
-void skew_vertical() {
+void ColoredImageProcessor::skew_vertical() {
     // Create a temporary image to store the shrunken image.
     unsigned char temp_image[SIZE][SIZE][RGB];
 
